@@ -1,0 +1,96 @@
+// Function to create a new lecture session
+void createLectureSession() {
+    LectureSession newSession;
+    cout << "\n--- Create Lecture Session ---\n";
+    cout << "Enter course code: ";
+    cin >> newSession.courseCode;
+    cout << "Enter date (DD/MM/YYYY): ";
+    cin >> newSession.date;
+    
+    cout << "Enter start time (minutes): ";
+    cin >> newSession.startTime;
+    
+    cout << "Enter duration (minutes): ";
+    cin >> newSession.duration;
+
+    // Initialize attendance for each student
+    for (size_t i = 0; i < students.size(); ++i) {
+        newSession.attendance.push_back("Absent");
+    }
+
+    sessions.push_back(newSession);
+    cout << "Lecture session created successfully!\n";
+}
+
+// Function to mark attendance for a session
+void markAttendance() {
+    if (sessions.empty()) {
+        cout << "\nNo lecture sessions created yet!\n";
+        return;
+    }
+
+    cout << "\n--- Mark Attendance ---\n";
+    cout << "Select session:\n";
+    for (size_t i = 0; i < sessions.size(); ++i) {
+        cout << i + 1 << ". " << sessions[i].courseCode << " - " << sessions[i].date << endl;
+    }
+
+    int sessionChoice;
+    cin >> sessionChoice;
+    sessionChoice--;
+
+    if (sessionChoice < 0 || sessionChoice >= static_cast<int>(sessions.size())) {
+        cout << "Invalid session choice!\n";
+        return;
+    }
+
+    cout << "\n--- Students in Session ---\n";
+    for (size_t i = 0; i < students.size(); ++i) {
+        cout << i + 1 << ". " << students[i].name << " (" << students[i].indexNumber << ")\n";
+    }
+
+    int studentChoice;
+    string status;
+    cout << "Enter student number to mark attendance: ";
+    cin >> studentChoice;
+    studentChoice--;
+
+    cout << "Enter attendance status (Present/Absent/Late): ";
+    cin >> status;
+
+    if (studentChoice >= 0 && studentChoice < static_cast<int>(students.size())) {
+        sessions[sessionChoice].attendance[studentChoice] = status;
+        cout << "Attendance marked successfully!\n";
+    } else {
+        cout << "Invalid student choice!\n";
+    }
+}
+
+// Function to display attendance list for a session
+void displayAttendanceList() {
+    if (sessions.empty()) {
+        cout << "\nNo lecture sessions created yet!\n";
+        return;
+    }
+
+    cout << "\n--- Display Attendance List ---\n";
+    cout << "Select session:\n";
+    for (size_t i = 0; i < sessions.size(); ++i) {
+        cout << i + 1 << ". " << sessions[i].courseCode << " - " << sessions[i].date << endl;
+    }
+
+    int sessionChoice;
+    cin >> sessionChoice;
+    sessionChoice--;
+
+    if (sessionChoice < 0 || sessionChoice >= static_cast<int>(sessions.size())) {
+        cout << "Invalid session choice!\n";
+        return;
+    }
+
+    cout << "\n--- Attendance List ---\n";
+    cout << "Student\t\tStatus\n";
+    for (size_t i = 0; i < students.size(); ++i) {
+        cout << students[i].name << "\t\t" << sessions[sessionChoice].attendance[i] << endl;
+    }
+}
