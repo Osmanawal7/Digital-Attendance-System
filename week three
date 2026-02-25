@@ -1,0 +1,86 @@
+// Function to save student records to file
+void saveStudentsToFile() {
+    ofstream outFile("students.txt");
+    if (!outFile) {
+        cout << "Error opening file for writing!\n";
+        return;
+    }
+
+    for (const auto& student : students) {
+        outFile << student.indexNumber << "," << student.name << "," << student.program << endl;
+    }
+    outFile.close();
+    cout << "Student records saved to file successfully!\n";
+}
+
+// Function to load student records from file
+void loadStudentsFromFile() {
+    ifstream inFile("students.txt");
+    if (!inFile) {
+        cout << "Error opening file for reading!\n";
+        return;
+    }
+
+    students.clear();
+    string line;
+    while (getline(inFile, line)) {
+        stringstream ss(line);
+        string indexNumber, name, program;
+        getline(ss, indexNumber, ',');
+        getline(ss, name, ',');
+        getline(ss, program, ',');
+        students.push_back({indexNumber, name, program});
+    }
+    inFile.close();
+    cout << "Student records loaded from file successfully!\n";
+}
+
+int main() {
+    loadStudentsFromFile();
+
+    int choice;
+    do {
+        cout << "\n--- Student & Attendance Management System ---\n";
+        cout << "1. Register students\n";
+        cout << "2. View all registered students\n";
+        cout << "3. Search students by index number\n";
+        cout << "4. Create lecture session\n";
+        cout << "5. Mark attendance\n";
+        cout << "6. Display attendance list\n";
+        cout << "7. Save student records to file\n";
+        cout << "0. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                registerStudent();
+                break;
+            case 2:
+                viewAllStudents();
+                break;
+            case 3:
+                searchStudentByIndex();
+                break;
+            case 4:
+                createLectureSession();
+                break;
+            case 5:
+                markAttendance();
+                break;
+            case 6:
+                displayAttendanceList();
+                break;
+            case 7:
+                saveStudentsToFile();
+                break;
+            case 0:
+                cout << "Exiting system. Goodbye!\n";
+                break;
+            default:
+                cout << "Invalid choice. Try again.\n";
+        }
+    } while (choice != 0);
+
+    return 0;
+}
